@@ -1,29 +1,35 @@
 //jshint esversion:6
 
 const express = require("express");
-const bodyParser = require("body-parser");
-
 const app = express();
 
-app.use(bodyParser.urlencoded({extender: true}));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static("public"));
 
 app.set('view engine', 'ejs');
 
+let items = [];
+
 app.get("/", function(req, res) {
 
-  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  var today = new Date();
-  var day = today.toLocaleDateString("en-US", options);
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  let today = new Date();
+  let day = today.toLocaleDateString("en-US", options);
 
   res.render("list", {
-    kindOfDay: day
+    kindOfDay: day,
+    newListItems: items, 
   });
 
 });
 
 
 app.post("/", function (req, res){
-  console.log(req.body.newItem);
+  let item = req.body.newItem;
+  items.push(item);
+
+  res.redirect("/");
 
 });
 
