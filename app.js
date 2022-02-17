@@ -1,6 +1,7 @@
 //jshint esversion:6
 
 const express = require("express");
+const date = require(__dirname + "/date.js");
 const app = express();
 
 app.use(express.json());
@@ -14,11 +15,7 @@ let workItems = [];
 
 app.get("/", function(req, res) {
 
-
-
-  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  let today = new Date();
-  let day = today.toLocaleDateString("en-US", options);
+  let day = date.getDate();
 
   res.render("list", {
     listTitle: day,
